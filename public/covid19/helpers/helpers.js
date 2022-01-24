@@ -1,4 +1,5 @@
 import { crearGrafica } from './crear-grafica.js';
+import { crearTabla } from './crear-table.js';
 
 export const traerInfoTotalCovid = async() => {
     const urlApi = 'http://localhost:3000/api/total/';
@@ -6,34 +7,20 @@ export const traerInfoTotalCovid = async() => {
     transformarResult( result.data.data );
     
 };
+export const traerInfoPais = async( pais = '' ) => {
+    const urlApi = `http://localhost:3000/api/countries/${pais}`;
+    const result = await axios.get( urlApi );
+    console.log(result);
+};
+
 const transformarResult = ( result = [] ) => {
     const minDeath = 8_000_000;
     const arrFiltrado = result.filter( obj => obj.confirmed > minDeath )
     crearGrafica( arrFiltrado );
     crearTabla( arrFiltrado );
 };
-const crearTabla = ( result = [] ) => {
-    const rowHead = document.querySelector('#trHead');
-    
-    insertarData(result);
-    // Agregar headers
-    const keys = Object.keys( result[0] );
-    keys.forEach( llave => {
-        const th = document.createElement('th');
-        th.textContent = llave;
 
-        rowHead.appendChild( th );
-    } );
-    const th = document.createElement('th');
-    th.textContent = 'Detalle';
-
-    rowHead.appendChild( th );
-    // Agregar datos
-    // result.forEach( (obj, i) => {
-    //     document.querySelector(`#${}`)
-    // } );
-}
-const insertarData = ( result = [] ) => {
+export const insertarData = ( result = [] ) => {
     const tBody = document.querySelector('#tBody');
 
     for( let obj of result ){
@@ -46,13 +33,9 @@ const insertarData = ( result = [] ) => {
             <td>${obj.recovered}</td>
             <td>${obj.active}</td>
             <td>
-                <button class="btn btn-primary" id="${obj.location}" >Ver</button> 
+                <button class="btn btn-primary btns" id="${obj.location}" >Ver</button> 
 
             </td>
-
-      </tr>
-        `
+      </tr>`
     }
-    
-
 }
