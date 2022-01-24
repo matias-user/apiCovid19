@@ -21,7 +21,7 @@ userPostApi(app)
 photosApi(app)
 covid19Api(app)
 
-app.use(express.static('public'))
+app.use(express.static('public/covid19'))
 
 app.get('/jwt-practico', (req, res) => {
     res.sendFile(path.join(__dirname+'/public/jwt-practico/index.html'))
